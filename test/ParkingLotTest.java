@@ -8,16 +8,16 @@ public class ParkingLotTest {
     public void shouldParkIfNotParked() {
         Vehicle car = vehicle("abc");
         ParkingLot lot = new ParkingLotImpl(2,0);
-        assertEquals("P-abc", lot.park(car));
+        assertEquals(car.getPlateNo(), lot.park(car).getPlateNo());
 
     }
 
-    @Test
+    @Test(expected = ParkingSpaceNotAvailableException.class)
     public void shouldNotParkIfAlreadyParked() {
         Vehicle car = vehicle("abc");
         ParkingLot lot = new ParkingLotImpl(2,0);
         lot.park(car);
-        assertEquals("P-FAIL", lot.park(car));
+        lot.park(car);
 
     }
 
@@ -40,13 +40,13 @@ public class ParkingLotTest {
 
     }
 
-    @Test
+    @Test(expected = ParkingSpaceNotAvailableException.class)
     public void shouldNotParkIfParkingLotIsFull() {
         ParkingLot lot = new ParkingLotImpl(2,0);
 
         lot.park(vehicle("abc"));
         lot.park(vehicle("123"));
-        assertEquals("P-FAIL", lot.park(vehicle("678")));
+        lot.park(vehicle("678"));
 
     }
 

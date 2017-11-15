@@ -14,16 +14,16 @@ public class ParkingLotImpl implements ParkingLot {
         this.level = level;
     }
 
-    public String park(Vehicle car) {
+    public ParkingToken park(Vehicle car) {
         if (isFull() || wasParked(car))
-            return "P-FAIL";
+            throw new ParkingSpaceNotAvailableException();
         parkingSlots.put(car.getPlateNo(), car);
         if (isFull()) {
             for (ParkingLotNotifiable notifiable : notifiables) {
                 notifiable.notifyFull();
             }
         }
-        return "P-" + car.getPlateNo()+"-"+level;
+        return new ParkingToken(car.getPlateNo(), level);
     }
 
     public boolean unPark(Vehicle car) {
@@ -55,6 +55,11 @@ public class ParkingLotImpl implements ParkingLot {
 
     public boolean isFull() {
         return parkingSlots.size() == capacity;
+    }
+
+    @Override
+    public int takenSize() {
+        return this.parkingSlots.size();
     }
 
 }
