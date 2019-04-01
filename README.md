@@ -1,2 +1,3 @@
 # parkingLot
-parking lot problem-Day1
+parking lot with design principles
+1. try 1
